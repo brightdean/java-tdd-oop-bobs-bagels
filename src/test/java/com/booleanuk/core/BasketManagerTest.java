@@ -5,12 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BasketManagerTest {
-
-
     private BasketManager basketManager;
     @BeforeEach
     public void setup(){
-        basketManager = new BasketManager();
+        basketManager = new BasketManager(10);
     }
 
     @Test
@@ -43,7 +41,16 @@ public class BasketManagerTest {
         Assertions.assertTrue(basketManager.remove(id));
         Assertions.assertTrue(basketManager.getBasket().isEmpty());
 
+    }
 
+    @Test
+    public void testBasketCapacity() {
+        basketManager.setCapacity(2);
+        basketManager.add("Bagel", "Onion");
+        basketManager.add("Bagel", "Plain");
+
+        Assertions.assertFalse(basketManager.add("Bagel", "Onion"));
+        Assertions.assertEquals(2, basketManager.getBasket().size());
 
     }
 }

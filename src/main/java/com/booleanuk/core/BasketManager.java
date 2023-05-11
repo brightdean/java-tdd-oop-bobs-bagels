@@ -8,9 +8,10 @@ public class BasketManager {
 
     static List<Item> stock;
     private List<Product> basket;
+    private int capacity;
 
-    public BasketManager(){
-
+    public BasketManager(int capacity){
+        this.capacity = capacity;
         this.basket = new ArrayList<>();
     }
 
@@ -45,6 +46,15 @@ public class BasketManager {
 
     public void setBasket(List<Product> basket) {
         this.basket = basket;
+    }
+
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     private Product getProductByNameAndVariant(String name, String variant){
