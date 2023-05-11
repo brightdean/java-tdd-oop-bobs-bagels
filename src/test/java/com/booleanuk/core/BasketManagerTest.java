@@ -53,4 +53,5 @@ public class BasketManagerTest {
         Assertions.assertEquals(2, basketManager.getBasket().size());
 
     }
+
 }

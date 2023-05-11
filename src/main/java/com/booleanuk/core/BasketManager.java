@@ -77,6 +77,9 @@ public class BasketManager {
     }
 
     public boolean add(String name, String variant){
+
+        if (basket.size() >= capacity) return false;
+
         Product product = getProductByNameAndVariant(name, variant);
 
         if(product == null) {
