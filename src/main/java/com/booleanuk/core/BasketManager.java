@@ -111,4 +111,12 @@ public class BasketManager {
         }
         return false;
     }
+
+    public double totalPrice() {
+        double sum = 0;
+        for (Product product: basket) {
+            sum += product.getPrice();
+        }
+        return sum;
+    }
 }
