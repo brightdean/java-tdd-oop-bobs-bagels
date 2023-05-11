@@ -98,7 +98,10 @@ public class BasketManager {
 
     public boolean remove(String id){
         Product productToRemove = getProductFromBasketById(id);
-        return basket.remove(productToRemove);
+        boolean result = basket.remove(productToRemove);
+
+        System.out.println( result ? "Product removed from basket" : "Product not in basket");
+        return result;
     }
 
     public boolean expandBasket(int capacity) {
