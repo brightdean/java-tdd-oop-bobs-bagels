@@ -6,19 +6,20 @@ import org.junit.jupiter.api.Test;
 
 public class BasketManagerTest {
     private BasketManager basketManager;
+
     @BeforeEach
-    public void setup(){
+    public void setup() {
         basketManager = new BasketManager(10);
     }
 
     @Test
-    public void testBasketManagerInitialState(){
+    public void testBasketManagerInitialState() {
         Assertions.assertTrue(basketManager.getBasket().isEmpty());
         Assertions.assertFalse(BasketManager.stock.isEmpty());
     }
 
     @Test
-    public void testAddBagel(){
+    public void testAddBagel() {
 
         Assertions.assertTrue(basketManager.add("Bagel", "Plain"));
         Assertions.assertTrue(basketManager.add("Bagel", "Plain"));
@@ -29,12 +30,12 @@ public class BasketManagerTest {
     }
 
     @Test
-    public void testRemoveBagel(){
+    public void testRemoveBagel() {
 
         Assertions.assertFalse(basketManager.remove("Product id not in Basket"));
 
         basketManager.add("Bagel", "Onion");
-        String id =  basketManager.getBasket().get(0).getId();
+        String id = basketManager.getBasket().get(0).getId();
 
         Assertions.assertFalse(basketManager.remove("Product id not in Basket"));
 
@@ -67,5 +68,12 @@ public class BasketManagerTest {
         basketManager.add("Bagel", "Plain"); // 0.39
 
         Assertions.assertEquals(0.88, basketManager.totalPrice());
+    }
+
+    @Test
+    public void testGetProductPrice() {
+        Assertions.assertEquals(0.49, basketManager.getPrice("Bagel", "Onion"));
+        Assertions.assertEquals(0.39, basketManager.getPrice("Bagel", "Plain"));
+        Assertions.assertEquals(-1, basketManager.getPrice("Bagel", "Cheetos"));
     }
 }
