@@ -60,4 +60,12 @@ public class BasketManagerTest {
         Assertions.assertTrue(basketManager.expandBasket(4));
         Assertions.assertFalse(basketManager.expandBasket(3));
     }
+
+    @Test
+    public void testGetProductsTotalPrice() {
+        basketManager.add("Bagel", "Onion"); // 0.49
+        basketManager.add("Bagel", "Plain"); // 0.39
+
+        Assertions.assertEquals(0.88, basketManager.totalPrice());
+    }
 }
