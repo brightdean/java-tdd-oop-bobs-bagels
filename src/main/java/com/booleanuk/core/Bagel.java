@@ -19,4 +19,8 @@ public class Bagel extends Product{
     public List<Filling> getFillings() {
         return fillings;
     }
+
+    public void addFilling(Filling filling) {
+        this.fillings.add(filling);
+    }
 }

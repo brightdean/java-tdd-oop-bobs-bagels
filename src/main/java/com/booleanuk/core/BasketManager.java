@@ -1,11 +1,14 @@
 package com.booleanuk.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public class BasketManager {
 
+    //TODO: convert stock to HashMap with key = SKU || [name, variant]
+    // new keySet[name,variant]
     static List<Item> stock;
     private List<Product> basket;
     private int capacity;
@@ -92,8 +95,6 @@ public class BasketManager {
         }
 
         return false;
-
-
     }
 
     public boolean remove(String id) {
@@ -127,5 +128,38 @@ public class BasketManager {
                 .findFirst();
 
         return foundItem.map(Item::getPrice).orElse(-1.0);
+    }
+
+    public boolean add (String name, String variant, String ...fillings) {
+        if (basket.size() >= capacity) return false;
+
+        // Find Product if it is in stock
+        Product product = getProductFromStockByNameAndVariant(name, variant);
+        if (product == null) {
+            System.out.println("Given product is not currently in stock");
+            return false;
+        }
+
+        //Add Bagel with fillings to basket
+        if (product instanceof Bagel) {
+            Bagel newBagel = new Bagel((Bagel) product);
+            if (fillings.length != 0) {
+                //Find fillings if it is in stock
+                for (String fillVariant: fillings) {
+                    Optional<Item> foundFilling = stock.stream().filter(item -> item.getName().equals("Filling"))
+                            .filter(item -> item.getVariant().equals(fillVariant)).findFirst();
+
+                    if (foundFilling.isPresent()) {
+                        newBagel.addFilling((Filling) foundFilling.get());
+                    } else {
+                        System.out.println("Filling doesn't exist");
+                    }
+                }
+            }
+            this.basket.add(newBagel);
+            return true;
+        }
+
+        return false;
     }
 }
