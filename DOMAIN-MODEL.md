@@ -40,3 +40,4 @@
 ## UML Model
 
 ![](./assets/uml_model.png)
+
