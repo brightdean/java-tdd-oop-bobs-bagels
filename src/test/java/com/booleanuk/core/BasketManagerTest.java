@@ -83,4 +83,15 @@ public class BasketManagerTest {
         Assertions.assertEquals(0.12, basketManager.getPrice("Filling", "Bacon"));
     }
 
+    public void testAddFillingsToBagel() {
+        basketManager.add("Bagel", "Onion", "Bacon");
+        basketManager.add("Bagel", "Plain", "Bacon", "Egg");
+
+        Bagel onionBagel = (Bagel) basketManager.getBasket().get(0);
+        Bagel plainBagel = (Bagel) basketManager.getBasket().get(1);
+
+        Assertions.assertEquals(1, onionBagel.getFillings().size());
+        Assertions.assertEquals("Bacon", onionBagel.getFillings().get(0).getVariant());
+        Assertions.assertEquals(2, plainBagel.getFillings().size());
+    }
 }
