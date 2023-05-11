@@ -72,8 +72,15 @@ public class BasketManagerTest {
 
     @Test
     public void testGetProductPrice() {
+        //Check bagel price
         Assertions.assertEquals(0.49, basketManager.getPrice("Bagel", "Onion"));
         Assertions.assertEquals(0.39, basketManager.getPrice("Bagel", "Plain"));
+
+        //Check price - item doesn't exist
         Assertions.assertEquals(-1, basketManager.getPrice("Bagel", "Cheetos"));
+
+        //Check filling price
+        Assertions.assertEquals(0.12, basketManager.getPrice("Filling", "Bacon"));
     }
+
 }
