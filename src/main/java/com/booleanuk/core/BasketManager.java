@@ -49,7 +49,6 @@ public class BasketManager {
 
     private Product getProductByNameAndVariant(String name, String variant){
 
-
         Optional<Item> foundItem = stock.stream()
                 .filter(item -> item.getName()
                         .equals(name) && item.getVariant().equals(variant)).findFirst();
@@ -58,6 +57,13 @@ public class BasketManager {
         if(!(foundItem.get() instanceof Product)) return null;
 
         return (Product)foundItem.get();
+    }
+
+    private Product getProductFromBasketById(String id){
+
+        return this.basket.stream()
+                .filter(product -> product.getId().equals(id)).findFirst().orElse(null);
+
     }
 
     public boolean add(String name, String variant){
@@ -75,5 +81,10 @@ public class BasketManager {
         return false;
 
 
+    }
+
+    public boolean remove(String id){
+        Product productToRemove = getProductFromBasketById(id);
+        return basket.remove(productToRemove);
     }
 }
