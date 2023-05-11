@@ -29,4 +29,21 @@ public class BasketManagerTest {
         Assertions.assertFalse(basketManager.add("Bagel", "Capuccino"));
 
     }
+
+    @Test
+    public void testRemoveBagel(){
+
+        Assertions.assertFalse(basketManager.remove("Product id not in Basket"));
+
+        basketManager.add("Bagel", "Onion");
+        String id =  basketManager.getBasket().get(0).getId();
+
+        Assertions.assertFalse(basketManager.remove("Product id not in Basket"));
+
+        Assertions.assertTrue(basketManager.remove(id));
+        Assertions.assertTrue(basketManager.getBasket().isEmpty());
+
+
+
+    }
 }
