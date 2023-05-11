@@ -100,4 +100,12 @@ public class BasketManager {
         Product productToRemove = getProductFromBasketById(id);
         return basket.remove(productToRemove);
     }
+
+    public boolean expandBasket(int capacity) {
+        if (capacity > this.capacity) {
+            this.capacity = capacity;
+            return true;
+        }
+        return false;
+    }
 }
