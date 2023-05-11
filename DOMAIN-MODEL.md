@@ -1,4 +1,4 @@
-`Basket`
+## Domain Model
 
 | Classes                  | Properties                | Methods                                                         | Scenarios                                                                | Outputs/Outcomes                                      |
 |--------------------------|---------------------------|-----------------------------------------------------------------|--------------------------------------------------------------------------|-------------------------------------------------------|
@@ -15,7 +15,6 @@
 |                          |                           | `addFilling(String filling): boolean`                           | User Story 8, 10: Given filling exists                                   | Return true, add filling to bagel                     |
 |                          |                           |                                                                 | User Story 10:    Given filling does not exist                           | Return false, inform the user                         |
 | `Coffee extends Product` |                           |                                                                 |                                                                          |                                                       |
-|                          |                           |                                                                 |                                                                          |                                                       |
 | `BasketManager`          |                           |                                                                 |                                                                          |                                                       |
 |                          | `stock: List<Item>`       |                                                                 |                                                                          |                                                       |
 |                          | `basket: List<Product>`   |                                                                 |                                                                          |                                                       |
@@ -36,7 +35,8 @@
 |                          |                           |                                                                 | User Story 6:     Basket is empty                                        | Return 0, inform the user                             |
 |                          |                           | `getPrice(String name, String variant): double`                 | User Story 7, 9:  Given name and variant exist                           | Return product price                                  |
 |                          |                           |                                                                 | User Story 7, 9:  Given name or variant does not exist                   | Return -1, inform the user                            |
-|                          |                           |                                                                 |                                                                          |                                                       |
-|                          |                           |                                                                 |                                                                          |                                                       |
-|                          |                           |                                                                 |                                                                          |                                                       |
-|                          |                           |                                                                 |                                                                          |                                                       |
+
+
+## UML Model
+
+![](./assets/uml_model.png)
