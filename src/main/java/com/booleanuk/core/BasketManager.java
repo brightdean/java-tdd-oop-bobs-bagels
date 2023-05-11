@@ -10,12 +10,12 @@ public class BasketManager {
     private List<Product> basket;
     private int capacity;
 
-    public BasketManager(int capacity){
+    public BasketManager(int capacity) {
         this.capacity = capacity;
         this.basket = new ArrayList<>();
     }
 
-   static {
+    static {
         stock = new ArrayList<>();
         // Bagels
         stock.add(new Bagel("BGLO", 0.49, "Bagel", "Onion") {
@@ -57,36 +57,36 @@ public class BasketManager {
         this.capacity = capacity;
     }
 
-    private Product getProductByNameAndVariant(String name, String variant){
+    private Product getProductFromStockByNameAndVariant(String name, String variant) {
 
         Optional<Item> foundItem = stock.stream()
                 .filter(item -> item.getName()
                         .equals(name) && item.getVariant().equals(variant)).findFirst();
 
-        if(foundItem.isEmpty()) return null;
-        if(!(foundItem.get() instanceof Product)) return null;
+        if (foundItem.isEmpty()) return null;
+        if (!(foundItem.get() instanceof Product)) return null;
 
-        return (Product)foundItem.get();
+        return (Product) foundItem.get();
     }
 
-    private Product getProductFromBasketById(String id){
+    private Product getProductFromBasketById(String id) {
 
         return this.basket.stream()
                 .filter(product -> product.getId().equals(id)).findFirst().orElse(null);
 
     }
 
-    public boolean add(String name, String variant){
+    public boolean add(String name, String variant) {
 
         if (basket.size() >= capacity) return false;
 
-        Product product = getProductByNameAndVariant(name, variant);
+        Product product = getProductFromStockByNameAndVariant(name, variant);
 
-        if(product == null) {
+        if (product == null) {
             System.out.println("Given product is not currently in stock");
             return false;
         }
-        if(product instanceof Bagel){
+        if (product instanceof Bagel) {
             this.basket.add(new Bagel((Bagel) product));
             return true;
         }
@@ -96,11 +96,11 @@ public class BasketManager {
 
     }
 
-    public boolean remove(String id){
+    public boolean remove(String id) {
         Product productToRemove = getProductFromBasketById(id);
         boolean result = basket.remove(productToRemove);
 
-        System.out.println( result ? "Product removed from basket" : "Product not in basket");
+        System.out.println(result ? "Product removed from basket" : "Product not in basket");
         return result;
     }
 
@@ -114,9 +114,18 @@ public class BasketManager {
 
     public double totalPrice() {
         double sum = 0;
-        for (Product product: basket) {
+        for (Product product : basket) {
             sum += product.getPrice();
         }
         return sum;
+    }
+
+    public double getPrice(String name, String variant) {
+        Optional<Item> foundItem = stock.stream()
+                .filter(item -> item.getName().equals(name)
+                        && item.getVariant().equals(variant))
+                .findFirst();
+
+        return foundItem.map(Item::getPrice).orElse(-1.0);
     }
 }
