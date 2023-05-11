@@ -54,4 +54,10 @@ public class BasketManagerTest {
 
     }
 
+    @Test
+    public void testExpandBasketCapacity() {
+        basketManager.setCapacity(2);
+        Assertions.assertTrue(basketManager.expandBasket(4));
+        Assertions.assertFalse(basketManager.expandBasket(3));
+    }
 }
