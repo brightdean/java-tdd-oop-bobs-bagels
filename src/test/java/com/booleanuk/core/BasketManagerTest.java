@@ -16,16 +16,17 @@ public class BasketManagerTest {
     @Test
     public void testBasketManagerInitialState(){
         Assertions.assertTrue(basketManager.getBasket().isEmpty());
+        Assertions.assertFalse(BasketManager.stock.isEmpty());
     }
 
     @Test
     public void testAddBagel(){
 
         Assertions.assertTrue(basketManager.add("Bagel", "Plain"));
-        Assertions.assertEquals("Plain", basketManager.getBasket().get(0).getVariant());
-
+        Assertions.assertTrue(basketManager.add("Bagel", "Plain"));
+        Assertions.assertEquals("Plain", basketManager.getBasket().get(1).getVariant());
+        System.out.println(basketManager.getBasket().get(1) == basketManager.getBasket().get(0));
         Assertions.assertFalse(basketManager.add("Bagel", "Capuccino"));
-
 
     }
 }

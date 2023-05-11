@@ -2,6 +2,7 @@ package com.booleanuk.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BasketManager {
 
@@ -16,24 +17,25 @@ public class BasketManager {
    static {
         stock = new ArrayList<>();
         // Bagels
-        stock.add(new Item("BGLO", 0.49, "Bagel", "Onion"));
-        stock.add(new Item("BGLP", 0.39, "Bagel", "Plain"));
-        stock.add(new Item("BGLE", 0.49, "Bagel", "Everything"));
-        stock.add(new Item("BGLS", 0.49, "Bagel", "Sesame"));
+        stock.add(new Bagel("BGLO", 0.49, "Bagel", "Onion") {
+        });
+        stock.add(new Bagel("BGLP", 0.39, "Bagel", "Plain"));
+        stock.add(new Bagel("BGLE", 0.49, "Bagel", "Everything"));
+        stock.add(new Bagel("BGLS", 0.49, "Bagel", "Sesame"));
 
         // Coffees
-        stock.add(new Item("COFB", 0.99, "Coffee", "Black"));
-        stock.add(new Item("COFW", 1.19, "Coffee", "White"));
-        stock.add(new Item("COFC", 1.29, "Coffee", "Cappuccino"));
-        stock.add(new Item("COFL", 1.29, "Coffee", "Latte"));
+        stock.add(new Coffee("COFB", 0.99, "Coffee", "Black"));
+        stock.add(new Coffee("COFW", 1.19, "Coffee", "White"));
+        stock.add(new Coffee("COFC", 1.29, "Coffee", "Cappuccino"));
+        stock.add(new Coffee("COFL", 1.29, "Coffee", "Latte"));
 
         // Fillings
-        stock.add(new Item("FILB", 0.12, "Filling", "Bacon"));
-        stock.add(new Item("FILE", 0.12, "Filling", "Egg"));
-        stock.add(new Item("FILC", 0.12, "Filling", "Cheese"));
-        stock.add(new Item("FILX", 0.12, "Filling", "Cream Cheese"));
-        stock.add(new Item("FILS", 0.12, "Filling", "Smoked Salmon"));
-        stock.add(new Item("FILH", 0.12, "Filling", "Ham"));
+        stock.add(new Filling("FILB", 0.12, "Filling", "Bacon"));
+        stock.add(new Filling("FILE", 0.12, "Filling", "Egg"));
+        stock.add(new Filling("FILC", 0.12, "Filling", "Cheese"));
+        stock.add(new Filling("FILX", 0.12, "Filling", "Cream Cheese"));
+        stock.add(new Filling("FILS", 0.12, "Filling", "Smoked Salmon"));
+        stock.add(new Filling("FILH", 0.12, "Filling", "Ham"));
 
     }
 
@@ -43,5 +45,35 @@ public class BasketManager {
 
     public void setBasket(List<Product> basket) {
         this.basket = basket;
+    }
+
+    private Product getProductByNameAndVariant(String name, String variant){
+
+
+        Optional<Item> foundItem = stock.stream()
+                .filter(item -> item.getName()
+                        .equals(name) && item.getVariant().equals(variant)).findFirst();
+
+        if(foundItem.isEmpty()) return null;
+        if(!(foundItem.get() instanceof Product)) return null;
+
+        return (Product)foundItem.get();
+    }
+
+    public boolean add(String name, String variant){
+        Product product = getProductByNameAndVariant(name, variant);
+
+        if(product == null) {
+            System.out.println("Given product is not currently in stock");
+            return false;
+        }
+        if(product instanceof Bagel){
+            this.basket.add(new Bagel((Bagel) product));
+            return true;
+        }
+
+        return false;
+
+
     }
 }
