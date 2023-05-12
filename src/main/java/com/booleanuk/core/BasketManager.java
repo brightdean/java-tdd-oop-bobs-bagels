@@ -21,80 +21,33 @@ public class BasketManager {
     static {
         stock = new ArrayList<>();
         // Bagels
-        stock.add(new Bagel("BGLO", 0.49, "Bagel", "Onion") {
+        stock.add(new Bagel("BGLO", 0.49, "Onion") {
         });
-        stock.add(new Bagel("BGLP", 0.39, "Bagel", "Plain"));
-        stock.add(new Bagel("BGLE", 0.49, "Bagel", "Everything"));
-        stock.add(new Bagel("BGLS", 0.49, "Bagel", "Sesame"));
+        stock.add(new Bagel("BGLP", 0.39, "Plain"));
+        stock.add(new Bagel("BGLE", 0.49, "Everything"));
+        stock.add(new Bagel("BGLS", 0.49, "Sesame"));
 
         // Coffees
-        stock.add(new Coffee("COFB", 0.99, "Coffee", "Black"));
-        stock.add(new Coffee("COFW", 1.19, "Coffee", "White"));
-        stock.add(new Coffee("COFC", 1.29, "Coffee", "Cappuccino"));
-        stock.add(new Coffee("COFL", 1.29, "Coffee", "Latte"));
+        stock.add(new Coffee("COFB", 0.99, "Black"));
+        stock.add(new Coffee("COFW", 1.19, "White"));
+        stock.add(new Coffee("COFC", 1.29, "Cappuccino"));
+        stock.add(new Coffee("COFL", 1.29, "Latte"));
 
         // Fillings
-        stock.add(new Filling("FILB", 0.12, "Filling", "Bacon"));
-        stock.add(new Filling("FILE", 0.12, "Filling", "Egg"));
-        stock.add(new Filling("FILC", 0.12, "Filling", "Cheese"));
-        stock.add(new Filling("FILX", 0.12, "Filling", "Cream Cheese"));
-        stock.add(new Filling("FILS", 0.12, "Filling", "Smoked Salmon"));
-        stock.add(new Filling("FILH", 0.12, "Filling", "Ham"));
-
+        stock.add(new Filling("FILB", 0.12, "Bacon"));
+        stock.add(new Filling("FILE", 0.12, "Egg"));
+        stock.add(new Filling("FILC", 0.12, "Cheese"));
+        stock.add(new Filling("FILX", 0.12, "Cream Cheese"));
+        stock.add(new Filling("FILS", 0.12, "Smoked Salmon"));
+        stock.add(new Filling("FILH", 0.12, "Ham"));
     }
 
     public List<Product> getBasket() {
         return basket;
     }
 
-    public void setBasket(List<Product> basket) {
-        this.basket = basket;
-    }
-
-
-    public int getCapacity() {
-        return capacity;
-    }
-
     public void setCapacity(int capacity) {
         this.capacity = capacity;
-    }
-
-    private Product getProductFromStockByNameAndVariant(String name, String variant) {
-
-        Optional<Item> foundItem = stock.stream()
-                .filter(item -> item.getName()
-                        .equals(name) && item.getVariant().equals(variant)).findFirst();
-
-        if (foundItem.isEmpty()) return null;
-        if (!(foundItem.get() instanceof Product)) return null;
-
-        return (Product) foundItem.get();
-    }
-
-    private Product getProductFromBasketById(String id) {
-
-        return this.basket.stream()
-                .filter(product -> product.getId().equals(id)).findFirst().orElse(null);
-
-    }
-
-    public boolean add(String name, String variant) {
-
-        if (basket.size() >= capacity) return false;
-
-        Product product = getProductFromStockByNameAndVariant(name, variant);
-
-        if (product == null) {
-            System.out.println("Given product is not currently in stock");
-            return false;
-        }
-        if (product instanceof Bagel) {
-            this.basket.add(new Bagel((Bagel) product));
-            return true;
-        }
-
-        return false;
     }
 
     public boolean remove(String id) {
@@ -103,6 +56,11 @@ public class BasketManager {
 
         System.out.println(result ? "Product removed from basket" : "Product not in basket");
         return result;
+    }
+
+    private Product getProductFromBasketById(String id) {
+        return this.basket.stream()
+                .filter(product -> product.getId().equals(id)).findFirst().orElse(null);
     }
 
     public boolean expandBasket(int capacity) {
@@ -133,33 +91,32 @@ public class BasketManager {
     public boolean add (String name, String variant, String ...fillings) {
         if (basket.size() >= capacity) return false;
 
-        // Find Product if it is in stock
-        Product product = getProductFromStockByNameAndVariant(name, variant);
-        if (product == null) {
-            System.out.println("Given product is not currently in stock");
-            return false;
-        }
-
-        //Add Bagel with fillings to basket
-        if (product instanceof Bagel) {
-            Bagel newBagel = new Bagel((Bagel) product);
-            if (fillings.length != 0) {
-                //Find fillings if it is in stock
-                for (String fillVariant: fillings) {
-                    Optional<Item> foundFilling = stock.stream().filter(item -> item.getName().equals("Filling"))
-                            .filter(item -> item.getVariant().equals(fillVariant)).findFirst();
-
-                    if (foundFilling.isPresent()) {
-                        newBagel.addFilling((Filling) foundFilling.get());
-                    } else {
-                        System.out.println("Filling doesn't exist");
+        // If item is in stock
+        for (Item item: stock) {
+            if (item.getName().equals(name) && item.getVariant().equals(variant)) {
+                if (item.getName().equals("Bagel")) {
+                    Bagel newBagel = new Bagel((Bagel) item);
+                    if (fillings.length > 0) {
+                       addFillings(newBagel, fillings);
                     }
+                    basket.add(newBagel);
+                    return true;
+                }
+                if (item.getName().equals("Coffee")) {
+                    basket.add (new Coffee((Coffee) item));
+                    return true;
                 }
             }
-            this.basket.add(newBagel);
-            return true;
         }
-
         return false;
+    }
+
+    private void addFillings(Bagel bagel, String ...fillings) {
+        for(String filling: fillings) {
+            for(Item item: stock) {
+                if (item.getVariant().equals(filling) && item.getName().equals("Filling"))
+                    bagel.addFilling(new Filling ((Filling) item));
+            }
+        }
     }
 }

@@ -7,13 +7,13 @@ public class Bagel extends Product{
 
     private List<Filling> fillings;
 
-    public Bagel(String SKU, double price, String name, String variant) {
-        super(SKU, price, name, variant);
+    public Bagel(String SKU, double price, String variant) {
+        super(SKU, price, "Bagel", variant);
         fillings = new ArrayList<>();
     }
 
     public Bagel(Bagel bagel){
-        this(bagel.getSKU(), bagel.getPrice(), bagel.getName(), bagel.getVariant());
+        this(bagel.getSKU(), bagel.getPrice(), bagel.getVariant());
     }
 
     public List<Filling> getFillings() {

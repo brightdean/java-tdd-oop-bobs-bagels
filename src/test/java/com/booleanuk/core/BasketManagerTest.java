@@ -2,6 +2,7 @@ package com.booleanuk.core;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class BasketManagerTest {
@@ -24,7 +25,9 @@ public class BasketManagerTest {
         Assertions.assertTrue(basketManager.add("Bagel", "Plain"));
         Assertions.assertTrue(basketManager.add("Bagel", "Plain"));
         Assertions.assertEquals("Plain", basketManager.getBasket().get(1).getVariant());
-        System.out.println(basketManager.getBasket().get(1) == basketManager.getBasket().get(0));
+
+        Assertions.assertNotEquals(basketManager.getBasket().get(1), basketManager.getBasket().get(0));
+
         Assertions.assertFalse(basketManager.add("Bagel", "Capuccino"));
 
     }
@@ -94,5 +97,8 @@ public class BasketManagerTest {
         Assertions.assertEquals(1, onionBagel.getFillings().size());
         Assertions.assertEquals("Bacon", onionBagel.getFillings().get(0).getVariant());
         Assertions.assertEquals(2, plainBagel.getFillings().size());
+
+        //Test fillings are different objects
+        Assertions.assertNotEquals(onionBagel.getFillings().get(0), plainBagel.getFillings().get(0));
     }
 }
