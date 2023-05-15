@@ -8,4 +8,9 @@ public class Filling extends Item{
     public Filling(Filling filling) {
         this(filling.getSKU(), filling.getPrice(), filling.getVariant());
     }
+
+    @Override
+    public Filling getItem() {
+        return this;
+    }
 }

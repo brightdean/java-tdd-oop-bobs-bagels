@@ -8,4 +8,9 @@ public class Coffee extends Product{
     public Coffee(Coffee coffee) {
         this(coffee.getSKU(), coffee.getPrice(), coffee.getVariant());
     }
+
+    @Override
+    public Coffee getItem() {
+        return this;
+    }
 }

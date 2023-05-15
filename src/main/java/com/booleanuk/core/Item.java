@@ -2,7 +2,7 @@ package com.booleanuk.core;
 
 import java.util.UUID;
 
-public  class Item {
+public abstract class Item {
     private final String id;
     private final String SKU;
     private double price;
@@ -48,4 +48,6 @@ public  class Item {
     public void setVariant(String variant) {
         this.variant = variant;
     }
+
+    public abstract <E extends Item> E getItem();
 }
