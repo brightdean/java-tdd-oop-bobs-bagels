@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class Store {
     static Map<String, Item> stock;
+    static Map<String, Integer[]> discounts;
 
     static {
         stock = new HashMap<>();

@@ -11,7 +11,7 @@ public class BasketStoreTest {
 
     @BeforeEach
     public void setup() {
-        int initialCapacity = 10;
+        int initialCapacity = 100;
         basket = new Basket(initialCapacity);
     }
 
@@ -67,14 +67,6 @@ public class BasketStoreTest {
     }
 
     @Test
-    public void testGetProductsTotalPrice() {
-        basket.add("BGLO"); // 0.49
-        basket.add("BGLP"); // 0.39
-
-        Assertions.assertEquals(0.88, basket.totalPrice());
-    }
-
-    @Test
     public void testGetProductPrice() {
         //Check bagel price
         Assertions.assertEquals(0.49, basket.getPrice("BGLO"));
@@ -101,5 +93,99 @@ public class BasketStoreTest {
 
         //Test fillings are different objects
         Assertions.assertNotEquals(onionBagel.getFillings().get(0), plainBagel.getFillings().get(0));
+    }
+
+    @Test
+    public void test12BGLPDiscountTotal() {
+        for(int i = 0; i < 13; i++){
+            basket.add("BGLP");
+        }
+
+        Assertions.assertEquals(13, basket.getProducts().size());
+        Assertions.assertEquals(4.38, basket.totalPrice());
+    }
+
+    @Test
+    public void test12BGLODiscountTotal() {
+        for(int i = 0; i < 13; i++){
+            basket.add("BGLO");
+        }
+
+        Assertions.assertEquals(13, basket.getProducts().size());
+        Assertions.assertEquals(2.49+2.49+0.49, basket.totalPrice());
+    }
+
+    @Test
+    public void test12BGLO3COFBDiscountTotal() {
+        for(int i = 0; i < 13; i++){
+            basket.add("BGLO");
+        }
+        basket.add("COFB");
+        basket.add("COFB");
+        basket.add("COFB");
+        Assertions.assertEquals(16, basket.getProducts().size());
+        Assertions.assertEquals(2.49+2.49+1.25+0.99+0.99, basket.totalPrice());
+    }
+
+    @Test
+    public void testComplexDiscountTotal() {
+        for(int i = 0; i < 12; i++){
+            basket.add("BGLO");
+            basket.add("BGLP");
+            basket.add("BGLP");
+        }
+        basket.add("COFB");
+        basket.add("COFB");
+        basket.add("BGLE");
+        basket.add("BGLS");
+
+        double expected = 2.49+2.49+3.99+3.99+1.25+1.25;
+
+        Assertions.assertEquals(expected, basket.totalPrice());
+    }
+
+    @Test
+    public void testComplexDiscountTotalWithFillings() {
+        for(int i = 0; i < 12; i++){
+            if(i == 0)
+                basket.add("BGLO", "FILB", "FILE");
+            else if(i == 1)
+                basket.add("BGLO", "FILC", "FILB");
+            else
+                basket.add("BGLO");
+            basket.add("BGLP");
+            basket.add("BGLP");
+        }
+        basket.add("COFB");
+        basket.add("COFB");
+        basket.add("BGLE");
+        basket.add("BGLS");
+
+
+        double expected = 2.49+2.49+3.99+3.99+1.25+1.25+(4*0.12);
+
+        Assertions.assertEquals((double)Math.round(expected*100)/100, basket.totalPrice());
+    }
+
+    @Test
+    public void testCreateReceipt(){
+        for(int i = 0; i < 12; i++){
+            if(i == 0)
+                basket.add("BGLO", "FILB", "FILE");
+            else if(i == 1)
+                basket.add("BGLO", "FILC", "FILB");
+            else
+                basket.add("BGLO");
+            basket.add("BGLP");
+            basket.add("BGLP");
+        }
+        basket.add("COFB");
+        basket.add("COFB");
+        basket.add("BGLE");
+        basket.add("BGLS");
+
+
+        basket.createReceipt();
+
     }
 }
