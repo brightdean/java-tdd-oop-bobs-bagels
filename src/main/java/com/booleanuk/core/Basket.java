@@ -2,7 +2,7 @@ package com.booleanuk.core;
 
 import java.util.*;
 
-import static com.booleanuk.core.Store.stock;
+import static com.booleanuk.core.Store.*;
 
 public class Basket {
     private List<Product> products;
@@ -44,6 +44,16 @@ public class Basket {
         }
         return false;
     }
+
+    public void createReceipt2(){
+
+        Receipt receipt = new Receipt(products);
+        receipt.applySingleDiscount(offers.get("BGLP"));
+        receipt.applySingleDiscount(offers.get("BGLO"));
+        receipt.applySingleDiscount(offers.get("BGLE"));
+        receipt.applyComboDiscount("COFB", "BGLO", 1.25);
+        receipt.print();
+    }
     public void createReceipt(){
         Map<String, ReceiptItem> receiptItems = new HashMap<>();
         Map<String, Integer> quantities = new HashMap<>();
@@ -69,6 +79,7 @@ public class Basket {
 
             }
         }
+
         for(String key : quantities.keySet()){
             String displayName = stock.get(key).getVariant() + " " + stock.get(key).getName();
             receiptItems.put(key, new ReceiptItem(displayName, quantities.get(key)));
@@ -262,4 +273,6 @@ public class Basket {
             }
         }
     }
+
+
 }

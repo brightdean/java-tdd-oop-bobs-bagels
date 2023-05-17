@@ -6,11 +6,30 @@ public class ReceiptItem {
     private int quantity;
     private double price;
 
-    //TODO add order for printing items in order??
+    private String[] fillings;
+    private double priceBeforeDiscount;
+
+    private String content="";
+
 
     public ReceiptItem(String name, int quantity){
         this.name = name;
         this.quantity = quantity;
+    }
+
+
+    public ReceiptItem(String name, int quantity, double price, double priceBeforeDiscount, String...fillings) {
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.priceBeforeDiscount = priceBeforeDiscount;
+        this.fillings = fillings;
+
+
+    }
+    public ReceiptItem(String name){
+        this.name = name;
+        this.content = String.format("%-20s\n", getName());
     }
 
     public String getName() {
@@ -41,9 +60,20 @@ public class ReceiptItem {
         this.price += price;
     }
 
+    public double getDifference(){
+        return this.price - this.priceBeforeDiscount;
+    }
+
+    public void update(double price){
+        this.quantity += 1;
+        this.price += price;
+    }
 
     @Override
     public String toString(){
-        return String.format("%-20s %3d %8.2f", getName(), getQuantity(), getPrice());
+        this.content =  String.format("%-20.20s %3d %8.2f\n", getName(), getQuantity(), getPrice());
+        for(String filling : fillings) this.content+= String.format("+%-20s\n", filling);
+        return content;
+
     }
 }

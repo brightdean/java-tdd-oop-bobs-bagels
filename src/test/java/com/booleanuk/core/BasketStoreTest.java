@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.booleanuk.core.Store.stock;
 
 public class BasketStoreTest {
@@ -187,5 +190,53 @@ public class BasketStoreTest {
 
         basket.createReceipt();
 
+    }
+
+    @Test
+    public void testProductGroup(){
+
+        for(int i = 0; i < 17; i++){
+            if(i < 2){
+                basket.add("BGLP", "FILB", "FILE");
+                basket.add("COFC");
+            }
+
+            else if(i < 16){
+                if(i > 14)
+                    basket.add("BGLS", "FILB");
+                else
+                    basket.add("BGLP");
+            }
+
+            else{
+                basket.add("BGLP", "FILE");
+                basket.add("COFB");
+            }
+
+        }
+        basket.createReceipt2();
+
+    }
+
+    @Test
+    public void testDiscounts(){
+
+        for(int i = 0; i < 12; i++){
+            if(i < 6){
+                basket.add("BGLP", "FILE");
+                basket.add("BGLO", "FILE", "FILC");
+            }
+
+            else
+                basket.add("BGLP", "FILE", "FILB");
+
+        }
+        basket.add("BGLO", "FILE");basket.add("BGLO", "FILE");basket.add("BGLO", "FILE", "FILB");
+
+        basket.add("COFB");
+        basket.add("COFC");
+
+
+        basket.createReceipt2();
     }
 }
