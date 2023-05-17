@@ -84,4 +84,27 @@ public class ReceiptTest {
         Receipt receipt = new Receipt();
         receipt.print(basket.getProducts());
     }
+
+    @Test
+    public void discountMultipleOffersWithSupplements(){
+
+        for(int i = 0; i < 12; i++){
+            if(i < 6){
+                basket.add("BGLP", "FILE");
+                basket.add("BGLO", "FILE", "FILC");
+            }
+
+            else
+                basket.add("BGLP", "FILE", "FILB");
+
+        }
+        basket.add("BGLO", "FILE");
+
+        basket.add("COFB");
+        basket.add("COFC");
+
+
+        Receipt receipt = new Receipt();
+        receipt.print(basket.getProducts());
+    }
 }

@@ -38,7 +38,7 @@ public class Receipt {
         // Receipt Footer
         if (this.totalDiscount > 0) {
             this.totalDiscount = Math.floor(this.totalDiscount*100)/100; //format discount number
-            String temp = String.format("You save a total of " + this.totalDiscount + "€");
+            String temp = String.format("You saved a total of " + this.totalDiscount + "€");
             context += "\n\n" + addPadding(lineLength, temp) + "\n";
             context += addPadding(lineLength, "on this shop");
         }

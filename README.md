@@ -1,5 +1,9 @@
 # Bob's Bagels - Object-oriented Programming
 
+# Receipt Example!!
+
+![](\assets\example_receipt.png)
+
 ![](./assets/bagels.jpg)
 
 ## Learning Objectives
