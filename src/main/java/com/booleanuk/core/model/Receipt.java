@@ -84,7 +84,7 @@ public class Receipt {
         //list of products with sku = SKU2 that are not already on a discount
         List<Product> childProducts = products.stream().filter(product -> product.getSKU().equals(SKU2) && !product.isUnderDiscount()).toList();
         int p2Count = childProducts.size();
-        System.out.printf("Coffees: %d\t Bagels: %d", p1Count, p2Count);
+
         int quantity = Math.min(p1Count, p2Count);
         int discountCount = quantity;
 
