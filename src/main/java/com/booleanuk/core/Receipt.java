@@ -2,14 +2,13 @@ package com.booleanuk.core;
 
 import com.booleanuk.core.model.*;
 
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Receipt {
     private double total;
-    private double totalDiscount; //TODO: show in receipt
+    private double totalDiscount;
     private Map<String, ReceiptItem> receiptItems;
 
     public Receipt() {
@@ -17,25 +16,31 @@ public class Receipt {
     }
 
     public void print(List<Product> products) {
+        // Calculate and create receipt values
         createReceiptItems(products);
         applySpecialOffers(products);
-
+        // Receipt Header
         int lineLength = 33;
         String context = addPadding(lineLength, "~~~ Bob's Bagels ~~~");
-
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
         context += "\n\n" + addPadding(lineLength, now.format(formatter)) + "\n\n";
 
+        // Receipt Items and Total
         context += "-".repeat(lineLength) + "\n\n";
-
         for (String key : receiptItems.keySet()) {
             context += receiptItems.get(key) + "\n";
         }
-
         context += "-".repeat(lineLength) + "\n";
         context += String.format("Total%27.02f€", Math.floor(total*100) / 100);
+
+
+        // Receipt Footer
+        if (this.totalDiscount > 0) {
+            String temp = String.format("You save a total of " + this.totalDiscount + "€");
+            context += "\n\n" + addPadding(lineLength, temp) + "\n";
+            context += addPadding(lineLength, "on this shop");
+        }
         context += "\n\n" + addPadding(lineLength, "Thank you") + "\n";
         context += addPadding(lineLength, "for your order!");
         System.out.println(context);
@@ -60,7 +65,7 @@ public class Receipt {
         }
 
         for(String key: receiptItems.keySet()) {
-            total += receiptItems.get(key).getPrice();
+            this.total += receiptItems.get(key).getPrice();
         }
     }
 
@@ -86,8 +91,7 @@ public class Receipt {
 
     private void applySpecialOffers(List<Product> basketProducts) {
         // Populate a map with products, separated by SKU (map key)
-
-        Map<String, List<Product>> products = new HashMap<>(); //TODO: replace with filter Arraylist by SKU
+        Map<String, List<Product>> products = new HashMap<>();
         for (Product product : basketProducts) {
             String sku = product.getSku();
             if (products.containsKey(sku)) {
@@ -98,22 +102,18 @@ public class Receipt {
             }
         }
 
-        ItemOffer bglp12 = new ItemOffer("Offer: 12 Plain Bagels", "BGLP", 12, 3.99);
-        ItemOffer bglo6 = new ItemOffer("Offer: 6 Onion Bagels","BGLO", 6, 2.49);
-        ItemOffer bgle6 = new ItemOffer("Offer: 6 Ever Bagels","BGLE", 6, 2.49);
+        Map<String, List<OfferItem>> offers =  Offers.getOfferItems();
 
-        ItemOffer coffeeB = new ItemOffer("Offer: Coff & Bagel","COFB", 1, 0.99);
-        ItemOffer bagelP = new ItemOffer("Offer: Coff & Bagel","BGLP", 1, 0.26);
-
-        applySingleProductOffer(products, bglp12);
-        applySingleProductOffer(products, bglo6);
-        applySingleProductOffer(products, bgle6);
-
-        //TODO: implement COFB + BGLP offer
-        applyComboOffer(products, coffeeB, bagelP);
+        for (String key: offers.keySet()) {
+            if (offers.get(key).size() == 1) {
+                applySingleProductOffer(products, offers.get(key).get(0));
+            } else {
+                applyComboOffer(products, offers.get(key).toArray(new OfferItem[offers.get(key).size()]));
+            }
+        }
     }
     
-    private void applySingleProductOffer(Map<String, List<Product>> products, ItemOffer offer) {
+    private void applySingleProductOffer(Map<String, List<Product>> products, OfferItem offer) {
         if (products.containsKey(offer.getSku())) {
             int timesOfferIsApplied = products.get(offer.getSku()).size() / offer.getQuantity();
             if (timesOfferIsApplied > 0) {
@@ -124,7 +124,8 @@ public class Receipt {
 
                 ReceiptItem item = new ReceiptItem(offer.getName(), timesOfferIsApplied, discount);
                 receiptItems.put(offer.getName(), item);
-                total += discount;
+                this.total += discount;
+                this.totalDiscount += Math.abs(discount);
                 // TODO: check if this works
                 products.get(offer.getSku()).removeIf(p -> products.get(offer.getSku()).indexOf(p)
                         < timesOfferIsApplied * offer.getQuantity());
@@ -132,7 +133,7 @@ public class Receipt {
         }
     }
 
-    private void applyComboOffer(Map<String, List<Product>> products, ItemOffer ... offers) {
+    private void applyComboOffer(Map<String, List<Product>> products, OfferItem... offers) {
         int timesOfferIsApplied = -1;
         double offerTotalPrice = 0;
         double originalTotalPrice = 0;
@@ -142,7 +143,7 @@ public class Receipt {
 
         // Check if all products necessary for the offer exist in the basket
         // and set local variables
-        for (ItemOffer offer: offers) {
+        for (OfferItem offer: offers) {
             if (!products.containsKey(offer.getSku())) {
                 System.out.println("Product not in offer");
                 return ;
@@ -162,11 +163,12 @@ public class Receipt {
 
             ReceiptItem item = new ReceiptItem(offers[0].getName(), timesOfferIsApplied, discount);
             receiptItems.put(offers[0].getName(), item);
-            total += discount;
+            this.total += discount;
+            this.totalDiscount += Math.abs(discount);
         }
 
         //Remove items used in discount from List
-        for (ItemOffer offer: offers) {
+        for (OfferItem offer: offers) {
             int finalTimesOfferIsApplied = timesOfferIsApplied;
             products.get(offer.getSku()).removeIf(p -> products.get(offer.getSku()).indexOf(p)
                     < finalTimesOfferIsApplied * offer.getQuantity());

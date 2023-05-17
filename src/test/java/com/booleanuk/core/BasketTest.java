@@ -1,16 +1,16 @@
 package com.booleanuk.core;
 
-import com.booleanuk.core.model.Inventory;
 import com.booleanuk.core.model.Product;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 public class BasketTest {
     private Basket basket;
     private Inventory inventory = Inventory.getInstance();
 
+    @BeforeAll
+    public static void globalSetup() {
+        Main.createDemoData();
+    }
     @BeforeEach
     public void setup() {
         int initialCapacity = 100;

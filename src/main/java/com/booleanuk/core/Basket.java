@@ -1,6 +1,5 @@
 package com.booleanuk.core;
 
-import com.booleanuk.core.model.Inventory;
 import com.booleanuk.core.model.Product;
 import com.booleanuk.core.model.ProductSupplementAssociation;
 import com.booleanuk.core.model.Supplement;
