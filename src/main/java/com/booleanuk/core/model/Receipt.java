@@ -1,12 +1,10 @@
-package com.booleanuk.core;
+package com.booleanuk.core.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Receipt {
-    private Map<String, ProductGroup> productGroups;
     private List<Product> products;
 
     private HashMap<String, ReceiptItem> receiptItems = new HashMap<>();
@@ -15,32 +13,6 @@ public class Receipt {
 
     public Receipt(List<Product> products){
         this.products = products;
-        this.productGroups = new HashMap<>();
-
-    }
-    private void populateGroups(){
-        for(Product product : products){
-            String key = product.getSKU()+"-";
-            if(product.getName().equals("Bagel")){
-                Bagel b = product.getItem();
-                b.getFillings().sort(Comparator.comparing(Item::getSKU));
-                if(b.getFillings().size() > 0){
-
-                    for(Filling f : b.getFillings()){
-                        key+=f.getVariant() + "_";
-                    }
-                }
-
-            }
-            //String key = product.getSKU();
-            if(productGroups.containsKey(key)){
-                productGroups.get(key).addProduct(product);
-            }else{
-                ProductGroup pg = new ProductGroup();
-                pg.addProduct(product);
-                productGroups.put(key, pg);
-            }
-        }
     }
 
     private HashMap<String, ReceiptItem> createReceiptItems(){

@@ -1,4 +1,4 @@
-package com.booleanuk.core;
+package com.booleanuk.core.model;
 
 import java.util.List;
 

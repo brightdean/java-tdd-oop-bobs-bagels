@@ -1,5 +1,10 @@
 package com.booleanuk.core;
 
+import com.booleanuk.core.model.Coffee;
+import com.booleanuk.core.model.Filling;
+import com.booleanuk.core.model.Item;
+import com.booleanuk.core.model.OfferItem;
+
 import java.util.HashMap;
 import java.util.Map;
 

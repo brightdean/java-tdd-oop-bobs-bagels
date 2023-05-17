@@ -1,4 +1,4 @@
-package com.booleanuk.core;
+package com.booleanuk.core.model;
 
 public class Filling extends Item{
     public Filling(String SKU, double price, String variant) {

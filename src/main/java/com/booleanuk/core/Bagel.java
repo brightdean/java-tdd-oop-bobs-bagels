@@ -1,9 +1,12 @@
 package com.booleanuk.core;
 
+import com.booleanuk.core.model.Filling;
+import com.booleanuk.core.model.Product;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bagel extends Product{
+public class Bagel extends Product {
 
     private List<Filling> fillings;
 

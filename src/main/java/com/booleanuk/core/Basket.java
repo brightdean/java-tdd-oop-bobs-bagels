@@ -1,5 +1,7 @@
 package com.booleanuk.core;
 
+import com.booleanuk.core.model.*;
+
 import java.util.*;
 
 import static com.booleanuk.core.Store.*;
