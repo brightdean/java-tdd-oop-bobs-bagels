@@ -1,91 +1,96 @@
 package com.booleanuk.core;
 
-import java.util.*;
+import com.booleanuk.core.model.Inventory;
+import com.booleanuk.core.model.Product;
+import com.booleanuk.core.model.ProductSupplementAssociation;
+import com.booleanuk.core.model.Supplement;
 
-import static com.booleanuk.core.Store.stock;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Basket {
     private List<Product> products;
+    private Inventory inventory;
     private int capacity;
 
-    public Basket(int capacity) {
-        this.capacity = capacity;
+    public Basket(Inventory inventory, int capacity) {
+        this.inventory = inventory;
         this.products = new ArrayList<>();
+        this.capacity = capacity;
     }
 
     public List<Product> getProducts() {
         return products;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public int getCapacity() {
+        return this.capacity;
+    }
+
+    public boolean add(String sku, String... supplementSkus) {
+        // Check if basket is full
+        if (products.size() >= capacity) {
+            System.out.println("Basket is full");
+            return false;
+        }
+        // Check if product in inventory
+        if (inventory.getProduct(sku) == null) {
+            System.out.println("Product not in inventory");
+            return false;
+        }
+        Product newProduct = new Product(inventory.getProduct(sku));
+        // If supplements where added, add them to the product if supported
+        if (supplementSkus.length > 0) {
+            addSupplementsToProduct(newProduct, supplementSkus);
+        }
+        products.add(newProduct);
+        return true;
+    }
+
+    private void addSupplementsToProduct(Product product, String... supplementSkus) {
+        for (String sku : supplementSkus) {
+            if (ProductSupplementAssociation.hasSupplement(product.getSku(), sku)) {
+                product.addSupplement(new Supplement(inventory.getSupplement(sku)));
+            } else {
+                System.out.println("You can't add " + sku + " to " + product.getSku());
+            }
+        }
     }
 
     public boolean remove(String id) {
-        Product productToRemove = getProductFromBasketById(id);
-        boolean result = products.remove(productToRemove);
-
-        System.out.println(result ? "Product removed from basket" : "Product not in basket");
-        return result;
-    }
-
-    private Product getProductFromBasketById(String id) {
-        return this.products.stream()
-                .filter(product -> product.getId().equals(id)).findFirst().orElse(null);
-    }
-
-    public boolean expandBasket(int capacity) {
-        if (capacity > this.capacity) {
-            this.capacity = capacity;
-            return true;
-        }
-        return false;
-    }
-
-    public double totalPrice() {
-        double sum = 0;
         for (Product product : products) {
-            sum += product.getPrice();
-        }
-        return sum;
-    }
-
-    public double getPrice(String sku) {
-        if (stock.containsKey(sku)) {
-            return stock.get(sku).getPrice();
-        }
-        return -1;
-    }
-
-    public boolean add(String sku, String... fillingSkus) {
-        if (products.size() >= capacity) return false;
-
-        Item item = stock.get(sku);
-        if (item != null) {
-            if (item.getName().equals("Bagel")) {
-                Bagel newBagel = new Bagel(item.getItem());
-                if (fillingSkus.length > 0) {
-                    addFillings(newBagel, fillingSkus);
-                }
-                products.add(newBagel);
-                return true;
-            }
-            if (item.getName().equals("Coffee")) {
-                products.add(new Coffee(item.getItem()));
+            if (product.getId() == id) {
+                products.remove(product);
                 return true;
             }
         }
+        System.out.println("Product not in basket");
         return false;
     }
 
-    private void addFillings(Bagel bagel, String... fillingSkus) {
-        for (String sku : fillingSkus) {
-            if (!stock.containsKey(sku)) {
-                continue;
-            }
-            if (stock.get(sku).getName().equals("Filling")) {
-                bagel.addFilling(new Filling(stock.get(sku).getItem()));
+    public void expandBasket(int capacity) {
+        if (this.capacity < capacity) this.capacity = capacity;
+    }
+
+    @Deprecated
+    // method doesn't calculate special offers
+    public double totalPrice() {
+        if (products.isEmpty())
+            return 0;
+
+        double price = 0;
+        for (Product product : products) {
+            price += product.getPrice();
+            if (!product.getSupplements().isEmpty()) {
+                for (Supplement supplement : product.getSupplements()) {
+                    price += supplement.getPrice();
+                }
             }
         }
+        return Math.floor(price * 100) / 100;
     }
 }
