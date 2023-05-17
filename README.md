@@ -2,7 +2,7 @@
 
 # Receipt Example!!
 
-![](\assets\example_receipt.png)
+![](./assets/example_receipt.png)
 
 ![](./assets/bagels.jpg)
 

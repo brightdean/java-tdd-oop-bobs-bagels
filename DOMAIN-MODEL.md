@@ -43,4 +43,4 @@
 |            | `receiptItems: List<ReceiptItem>` |            |                |                                                                                     |
 |            |                                   | `print()`  | User Story 11: | Prints the receipt. Below is an example output containing discounts and supplements |
 
-![](\assets\example_receipt.png)
+![](./assets/example_receipt.png)
