@@ -71,4 +71,17 @@ public class ReceiptTest {
         Receipt receipt = new Receipt();
         receipt.print(basket.getProducts());
     }
+
+    @Test
+    public void discountComboOffer2(){
+        basket.add("BGLP", "FILE", "FILB");
+        for(int i = 0; i < 3; i++){
+            basket.add("BGLE");
+            basket.add("BGLE");
+            basket.add("COFB");
+        }
+
+        Receipt receipt = new Receipt();
+        receipt.print(basket.getProducts());
+    }
 }
