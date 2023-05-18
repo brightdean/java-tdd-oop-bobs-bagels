@@ -107,4 +107,6 @@ public class ReceiptTest {
         Receipt receipt = new Receipt();
         receipt.print(basket.getProducts());
     }
+
+
 }

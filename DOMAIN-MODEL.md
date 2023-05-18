@@ -1,4 +1,6 @@
 
+## Standard Criteria UML
+![](./assets/uml_model.png)
 
 
 | Classes                   | Properties                      | Methods                                           | Scenarios                                                                | Outputs/Outcomes                                         |
@@ -32,6 +34,10 @@
 |                           |                                 | `getPrice(String SKU): double`                    | User Story 7, 9:  Given SKU exist                                        | Return product price                                     |
 |                           |                                 |                                                   | User Story 7, 9:  Given SKU does not exist                               | Return -1, inform the user                               |
 
+## Standard Criteria UML model
+
+![](./assets/standard_uml.png)
+
 
 ## Extension Model
 
@@ -42,5 +48,8 @@
 |            | `totalDiscount: double`           |            |                |                                                                                     |
 |            | `receiptItems: List<ReceiptItem>` |            |                |                                                                                     |
 |            |                                   | `print()`  | User Story 11: | Prints the receipt. Below is an example output containing discounts and supplements |
+
+### Coffee and Bagel Discount
+- This discount applies for a black coffee and a plain bagel only!!
 
 ![](./assets/example_receipt.png)
