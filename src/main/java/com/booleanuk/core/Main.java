@@ -20,12 +20,12 @@ public class Main {
 
     public static void createDemoData() {
         // Create Special Offers
-        OffersManager.createProductOffer("Offer: 12 Plain Bagels", "BGLP", 12, 3.99, 1);
-        OffersManager.createProductOffer("Offer: 6 Onion Bagels", "BGLO", 6, 2.49, 1);
-        OffersManager.createProductOffer("Offer: 6 Ever Bagels", "BGLE", 6, 2.49, 1);
+        OffersManager.createProductOffer("Offer: 12 Plain Bagels", "BGLP", 12, 3.99, 10);
+        OffersManager.createProductOffer("Offer: 6 Onion Bagels", "BGLO", 6, 2.49, 10);
+        OffersManager.createProductOffer("Offer: 6 Ever Bagels", "BGLE", 6, 2.49, 10);
 
-        //OffersManager.createComboProductOffer("Offer: Coff & Bagel", "COFB", 1, 0.99, 2);
-        //OffersManager.createComboProductOffer("Offer: Coff & Bagel", "BGLP", 1, 0.26, 2);
+        //OffersManager.createComboProductOffer("Offer: Coff & Bagel", "COFB", 1, 0.99, 20);
+        //OffersManager.createComboProductOffer("Offer: Coff & Bagel", "BGLP", 1, 0.26, 20);
 
         //Populate Inventory
         Inventory inventory = Inventory.getInstance();

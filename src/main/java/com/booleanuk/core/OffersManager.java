@@ -1,5 +1,6 @@
 package com.booleanuk.core;
 
+import com.booleanuk.core.model.MultipleProductsOffer;
 import com.booleanuk.core.model.Product;
 import com.booleanuk.core.model.ProductOffer;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class OffersManager {
     private static List<ProductOffer> productOffers;
-    //private static List<ComboProductOffers>; //TODO: Implement Combo Offers
+    private static List<MultipleProductsOffer> multipleProductsOffers;
 
     static {
         productOffers = new ArrayList<>();

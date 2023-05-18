@@ -111,18 +111,16 @@ public class Basket {
      * @return the total price of the items in the basket.
      */
     public double totalPrice() {
-        if (this.products.isEmpty())
-            return 0;
+        if (this.products.isEmpty()) return 0;
 
         BigDecimal totalPrice = BigDecimal.ZERO;
 
         for (Product product : this.products) {
-            totalPrice = totalPrice.add(product.getPrice()); // TODO: maybe make a getTotalPrice() {product totalPrice + supplements totalPrice}
+            totalPrice = totalPrice.add(product.getPrice());
             totalPrice = totalPrice.add(product.getSupplementsPrice());
         }
 
-        var productOffers = OffersManager.getProductOffers();
-        for (ProductOffer offer : productOffers) {
+        for (ProductOffer offer : OffersManager.getProductOffers()) {
             BigDecimal discountPrice = offer.applyOffer(this.products);
             if ( discountPrice != null) {
                 totalPrice = totalPrice.subtract(discountPrice);
@@ -130,9 +128,12 @@ public class Basket {
         }
 
         BigDecimal displayPrice = totalPrice.setScale(2, RoundingMode.HALF_EVEN);
-        //TODO: move this to the printing method - Class
+        return displayPrice.doubleValue();
+    }
+
+    // TODO: write javadoc, implement
+    public void print() {
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         //return nf.format(displayPrice.doubleValue());
-        return displayPrice.doubleValue();
     }
 }

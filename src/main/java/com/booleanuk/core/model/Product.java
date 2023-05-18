@@ -23,7 +23,9 @@ public class Product extends Item {
      */
     public void addSupplement(Supplement supplement) {
         supplements.add(supplement);
-        Collections.sort(supplements); //TODO: can use this for equals.
+        Collections.sort(supplements);
+        //TODO: do i compare products? if not delete this
+        // and there is not need to implement Comparable
     }
 
     public List<Supplement> getSupplements() {

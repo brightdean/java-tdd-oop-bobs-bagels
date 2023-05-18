@@ -13,6 +13,15 @@ public class ProductOffer implements Comparable<ProductOffer> {
     private BigDecimal price;
     private int priority;
 
+    /**
+     * <p>Stores the discounted price for specific quantities of a product.</p>
+     * @param offerName the name of the offer in order to display it.
+     * @param productSku the sku of the product to which the offer is to be applied.
+     * @param requiredQuantity the quantity of products needed for the discounted price to be applied.
+     * @param price the discounted price.
+     * @param priority the priority in which the offers are to be applied. The smaller the number
+     *                 the higher the priority.
+     */
     public ProductOffer(String offerName, String productSku, int requiredQuantity, double price, int priority) {
         this.offerName = offerName;
         this.productSku = productSku;
@@ -21,55 +30,8 @@ public class ProductOffer implements Comparable<ProductOffer> {
         this.priority = priority;
     }
 
-    /**
-     * <p>offerName represents the name of the offer
-     * in order to display it.</p>
-     *
-     * @return String
-     */
-    public String getOfferName() {
-        return offerName;
-    }
-
-    /**
-     * <p>productSku identifies the product to which the
-     * offer is to be applied.</p>
-     *
-     * @return String
-     */
-    public String getProductSku() {
-        return productSku;
-    }
-
-    /**
-     * <p>requiredQuantity is the quantity of products
-     * needed for the offered price to be applied.</p>
-     *
-     * @return int
-     */
-    public int getRequiredQuantity() {
-        return requiredQuantity;
-    }
-
-    /**
-     * <p>price is the price of the offer for the specified
-     * quantity of products with the specified sku.</p>
-     *
-     * @return BigDecimal
-     */
     public BigDecimal getPrice() {
         return price;
-    }
-
-    /**
-     * <p>priority represents the priority in which the
-     * offers are to be applied. The smaller the number
-     * the higher the priority.</p>
-     *
-     * @return int
-     */
-    public int getPriority() {
-        return priority;
     }
 
     /**
@@ -101,8 +63,8 @@ public class ProductOffer implements Comparable<ProductOffer> {
     }
 
     @Override
-    public int compareTo(ProductOffer item) {
-        return Integer.compare(this.priority, item.priority);
+    public int compareTo(ProductOffer o) {
+        return Integer.compare(this.priority, o.priority);
     }
 
     @Override

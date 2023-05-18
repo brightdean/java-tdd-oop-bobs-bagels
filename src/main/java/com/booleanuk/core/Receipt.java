@@ -32,13 +32,13 @@
 //            context += receiptItems.get(key) + "\n";
 //        }
 //        context += "-".repeat(lineLength) + "\n";
-//        context += String.format("Total%27.02f€", Math.floor(total*100) / 100);
+//        context += String.format("Total%27.02fï¿½", Math.floor(total*100) / 100);
 //
 //
 //        // Receipt Footer
 //        if (this.totalDiscount > 0) {
 //            this.totalDiscount = Math.floor(this.totalDiscount*100)/100; //format discount number
-//            String temp = String.format("You saved a total of " + this.totalDiscount + "€");
+//            String temp = String.format("You saved a total of " + this.totalDiscount + "ï¿½");
 //            context += "\n\n" + addPadding(lineLength, temp) + "\n";
 //            context += addPadding(lineLength, "on this shop");
 //        }
@@ -49,7 +49,7 @@
 //    private void createReceiptItems(List<Product> basketProducts) {
 //        // Generate a ReceiptItem for each unique product
 //        for (Product product : basketProducts) {
-//            String key = receiptItemKey(product); //TODO: improve
+//            String key = receiptItemKey(product);
 //            if (receiptItems.containsKey(key)) {
 //                receiptItems.get(key).increaseQuantity();
 //                receiptItems.get(key).updatePrice(product.getPrice());
@@ -127,7 +127,6 @@
 //                receiptItems.put(offer.getName(), item);
 //                this.total += discount;
 //                this.totalDiscount += Math.abs(discount);
-//                // TODO: check if this works
 //                products.get(offer.getSku()).removeIf(p -> products.get(offer.getSku()).indexOf(p)
 //                        < timesOfferIsApplied * offer.getQuantity());
 //            }
