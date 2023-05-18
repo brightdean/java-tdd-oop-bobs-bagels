@@ -1,18 +1,19 @@
 package com.booleanuk.core.model;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public abstract class Item {
-    private String id;
+    private final String id;
     private String sku;
-    private double price;
+    private BigDecimal price;
     private String name;
     private String variant;
 
     public Item(String sku, double price, String name, String variant) {
         this.id = UUID.randomUUID().toString();
         this.sku = sku;
-        this.price = price;
+        this.price = new BigDecimal(Double.toString(price));
         this.name = name;
         this.variant = variant;
     }
@@ -25,7 +26,7 @@ public abstract class Item {
         return sku;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

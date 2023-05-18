@@ -2,19 +2,30 @@ package com.booleanuk.core;
 
 import com.booleanuk.core.model.ProductSupplementAssociation;
 
-public class Main {
-    public static void main(String[] args) {
+import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.util.Locale;
 
+public class Main {
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        BigDecimal price = new BigDecimal("2.234");
+        BigDecimal displayPrice = price.setScale(2, RoundingMode.HALF_EVEN);
+        NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+
+        System.out.println(nf.format(displayPrice.doubleValue()));
+        System.out.println("\u0394");
     }
 
     public static void createDemoData() {
         // Create Special Offers
-        Offers.createOfferItem("Offer: 12 Plain Bagels", "BGLP", 12, 3.99, 1);
-        Offers.createOfferItem("Offer: 6 Onion Bagels", "BGLO", 6, 2.49, 1);
-        Offers.createOfferItem("Offer: 6 Ever Bagels", "BGLE", 6, 2.49, 1);
+        OffersManager.createProductOffer("Offer: 12 Plain Bagels", "BGLP", 12, 3.99, 1);
+        OffersManager.createProductOffer("Offer: 6 Onion Bagels", "BGLO", 6, 2.49, 1);
+        OffersManager.createProductOffer("Offer: 6 Ever Bagels", "BGLE", 6, 2.49, 1);
 
-        Offers.createOfferItem("Offer: Coff & Bagel", "COFB", 1, 0.99, 2);
-        Offers.createOfferItem("Offer: Coff & Bagel", "BGLP", 1, 0.26, 2);
+        //OffersManager.createComboProductOffer("Offer: Coff & Bagel", "COFB", 1, 0.99, 2);
+        //OffersManager.createComboProductOffer("Offer: Coff & Bagel", "BGLP", 1, 0.26, 2);
 
         //Populate Inventory
         Inventory inventory = Inventory.getInstance();

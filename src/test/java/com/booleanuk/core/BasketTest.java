@@ -5,22 +5,22 @@ import org.junit.jupiter.api.*;
 
 public class BasketTest {
     private Basket basket;
-    private Inventory inventory = Inventory.getInstance();
 
     @BeforeAll
     public static void globalSetup() {
         Main.createDemoData();
     }
+
     @BeforeEach
     public void setup() {
         int initialCapacity = 100;
-        basket = new Basket(inventory, initialCapacity);
+        basket = new Basket(initialCapacity);
     }
 
     @Test
     public void basketInitialState() {
         Assertions.assertTrue(basket.getProducts().isEmpty());
-        Assertions.assertEquals(15, basket.getInventory().size());
+        Assertions.assertEquals(15, Inventory.getInstance().size());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class BasketTest {
     public void basketCapacityExceeded() {
         Inventory inventory = Inventory.getInstance();
         int initialCapacity = 100;
-        basket = new Basket(inventory, 2);
+        basket = new Basket(2);
 
         Assertions.assertTrue(basket.add("BGLP"));
         Assertions.assertTrue(basket.add("BGLP"));
@@ -99,9 +99,9 @@ public class BasketTest {
     @Test
     @DisplayName("Check an items price before adding it to the basket")
     public void peekProductPrice() {
-        Assertions.assertEquals(0.39, inventory.getPrice("BGLP"));
-        Assertions.assertEquals(0.12, inventory.getPrice("FILE"));
-        Assertions.assertEquals(-1, inventory.getPrice("BGLPASD"));
+        Assertions.assertEquals(0.39, Inventory.getInstance().getPrice("BGLP"));
+        Assertions.assertEquals(0.12, Inventory.getInstance().getPrice("FILE"));
+        Assertions.assertEquals(-1, Inventory.getInstance().getPrice("BGLPASD"));
     }
 
     @Test
@@ -114,9 +114,27 @@ public class BasketTest {
     @Test
     public void getPriceWithSupplements() {
         basket.add("BGLP", "FILE", "FILB");
-        Product bagel = basket.getProducts().get(0);
 
         double price = Math.floor((0.39 + 0.12 + 0.12) * 100) / 100;
         Assertions.assertEquals(price, basket.totalPrice());
+    }
+
+    @Test
+    public void getPriceWithProductDiscount() {
+        for (int i = 0; i < 13; i++) {
+            basket.add("BGLP");
+        }
+        double expected = Math.floor((3.99 + 0.39) * 100) / 100;
+        Assertions.assertEquals(expected, basket.totalPrice());
+    }
+
+    @Test
+    public void getPriceWithProductDiscount_Complex() {
+        for (int i = 0; i < 25; i++) {
+            basket.add("BGLP");
+            basket.add("BGLO");
+        }
+        double expected = Math.floor((2*3.99 + 0.39 + 4*2.49 + 0.49) * 100) / 100;
+        Assertions.assertEquals(expected, basket.totalPrice());
     }
 }
