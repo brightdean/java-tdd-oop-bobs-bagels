@@ -32,13 +32,13 @@ public class Receipt {
             context += receiptItems.get(key) + "\n";
         }
         context += "-".repeat(lineLength) + "\n";
-        context += String.format("Total%27.02f€", Math.floor(total*100) / 100);
+        context += String.format("Total%27.02fÂ£", Math.floor(total*100) / 100);
 
 
         // Receipt Footer
         if (this.totalDiscount > 0) {
             this.totalDiscount = Math.floor(this.totalDiscount*100)/100; //format discount number
-            String temp = String.format("You saved a total of " + this.totalDiscount + "€");
+            String temp = String.format("You saved a total of " + this.totalDiscount + "Â£");
             context += "\n\n" + addPadding(lineLength, temp) + "\n";
             context += addPadding(lineLength, "on this shop");
         }
