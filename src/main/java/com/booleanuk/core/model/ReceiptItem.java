@@ -34,7 +34,7 @@ public class ReceiptItem {
 
     @Override
     public String toString(){
-        String result = String.format("%-20.20s %3d %7.2f€", getName(), getQuantity(), getPrice());
+        String result = String.format("%-20.20s %3d %7.2fÂ£", getName(), getQuantity(), getPrice());
         for(String extra: extras) {
             result += "\n +" + extra;
         }
