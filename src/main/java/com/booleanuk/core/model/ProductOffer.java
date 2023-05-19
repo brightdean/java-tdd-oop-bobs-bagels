@@ -52,6 +52,9 @@ public class ProductOffer implements Comparable<ProductOffer> {
         if (timesOfferApplies > 0) {
             int productsToDiscountCount = timesOfferApplies * this.requiredQuantity;
             for (int i = 0; i < productsToDiscountCount; i++) {
+                //TODO: change the whole method. The setOfferApplied way
+                // makes it so I can't getTotalPrice twice or more.
+                // Think of a way, and if it is better before doing it
                 eligibleProducts.get(i).setOfferApplied(true);
             }
             BigDecimal regularPrice = new BigDecimal(Double.toString(

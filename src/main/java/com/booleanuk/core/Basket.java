@@ -10,6 +10,7 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Basket {
     private List<Product> products;
@@ -126,6 +127,9 @@ public class Basket {
                 totalPrice = totalPrice.subtract(discountPrice);
             }
         }
+        // Set is Applied to false, int order to reapply discount if we call
+        // getTotalPrice again on the same products
+        products.forEach(product -> product.setOfferApplied(false));
 
         BigDecimal displayPrice = totalPrice.setScale(2, RoundingMode.HALF_EVEN);
         return displayPrice.doubleValue();
@@ -133,7 +137,15 @@ public class Basket {
 
     // TODO: write javadoc, implement
     public void print() {
-        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        // create a helper toString method
+
+        // I can also make my own hashcode in a style: BGLP-FILE-FILX
+        // this way if I can find same products by product.key().startsWith "BGLP"
+        // Check if this works as intended
+        // Map <product.hashcode(), List<Product>>
+
+        // Print Currency
+        NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.GERMANY);
         //return nf.format(displayPrice.doubleValue());
     }
 }
